@@ -42,17 +42,20 @@ function DrawBoard() {
         cellSize - padding
       );
       board_ctx.fill();
-
-      console.table(boardData);
-
+    }
+  }
+  // console.table(boardData);
+  for (let x = 0; x < boardSize; x++) {
+    for (let y = 0; y < boardSize; y++) {
       if (boardData[CoordToIndex(x, y)] != null) {
-        board_ctx.font = "50px serif";
+        board_ctx.font = "250px serif";
         board_ctx.fillStyle = "red";
+        board_ctx.textAlign = "center";
 
         board_ctx.fillText(
           boardData[CoordToIndex(x, y)],
           x * cellSize + cellSize / 2,
-          y * cellSize + cellSize / 2
+          y * cellSize + cellSize / 2 + padding * 10
         );
       }
     }
