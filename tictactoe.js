@@ -12,7 +12,7 @@ function GetClickedCell(event) {
 
   if (boardData[CoordToIndex(cellX, cellY)] == null) {
     boardData[CoordToIndex(cellX, cellY)] = currentPlayer;
-    CheckWin(currentPlayer);
+    if (CheckWin(currentPlayer)) console.log("Yatzy");
     currentPlayer = NextPlayer(currentPlayer);
     // console.log(cellX + ", " + cellY);
   }
@@ -80,27 +80,50 @@ function NextPlayer(player) {
 
 function CheckWin(currentPlayer) {
   let numbOfPlacements = 0;
-  let sum = 0;
+
+  let values = [];
+
   for (let i = 0; i < boardData.length; i++) {
     if (boardData[i] === currentPlayer) {
       numbOfPlacements++;
-      sum += boardValues[i];
+      values.push(boardValues[i]);
     }
   }
-  if (numbOfPlacements > 3) {
-    for (let i = 0; i < boardData.length; i++) {
-      if (boardData[i] === currentPlayer) {
-        if (sum - boardValues[i] === 15) {
-          console.log(currentPlayer);
+  console.log(numbOfPlacements + "Hey");
+
+  let sum = 0;
+  if (numbOfPlacements === 3) {
+    for (let i = 0; i < values.length; i++) {
+      sum += values[i];
+    }
+    if (sum === 15) {
+      return true;
+    }
+  }
+  if (numbOfPlacements === 4) {
+    for (let i = 0; i < values.length; i++) {
+      sum = 0;
+      for (let y = 0; y < values.length; y++) {
+        if (y !== i) sum += values[y];
+      }
+      if (sum === 15) {
+        return true;
+      }
+    }
+  }
+  if (numbOfPlacements === 5) {
+    for (let i = 0; i < values.length; i++) {
+      for (let y = 0; y < values.length; y++) {
+        sum = 0;
+        for (let x = 0; x < values.length; x++) {
+          if (x !== i && x !== y) sum += values[x];
+        }
+        if (sum === 15) {
+          return true;
         }
       }
     }
   }
-  if (sum === 15) {
-    console.log("yatzy");
-  }
-
-  // console.log(sum);
+  return false;
+  // https://stackoverflow.com/questions/2670217/detect-winning-game-in-nought-and-crosses FUCK YEAH SMART ALGORITHM
 }
-
-// https://stackoverflow.com/questions/2670217/detect-winning-game-in-nought-and-crosses FUCK YEAH SMART ALGORITHM
