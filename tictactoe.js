@@ -12,7 +12,7 @@ function GetClickedCell(event) {
 
   if (boardData[CoordToIndex(cellX, cellY)] == null) {
     boardData[CoordToIndex(cellX, cellY)] = currentPlayer;
-    if (CheckWin(currentPlayer)) console.log("Yatzy");
+    if (CheckWin(currentPlayer)) console.log("Yatzy! " + currentPlayer);
     currentPlayer = NextPlayer(currentPlayer);
     // console.log(cellX + ", " + cellY);
   }
@@ -80,7 +80,6 @@ function NextPlayer(player) {
 
 function CheckWin(currentPlayer) {
   let numbOfPlacements = 0;
-
   let values = [];
 
   for (let i = 0; i < boardData.length; i++) {
@@ -89,38 +88,18 @@ function CheckWin(currentPlayer) {
       values.push(boardValues[i]);
     }
   }
-  console.log(numbOfPlacements + "Hey");
 
   let sum = 0;
-  if (numbOfPlacements === 3) {
-    for (let i = 0; i < values.length; i++) {
-      sum += values[i];
-    }
-    if (sum === 15) {
-      return true;
-    }
-  }
-  if (numbOfPlacements === 4) {
-    for (let i = 0; i < values.length; i++) {
+  for (let i = 0; i < values.length; i++) {
+    for (let y = 0; y < values.length; y++) {
       sum = 0;
-      for (let y = 0; y < values.length; y++) {
-        if (y !== i) sum += values[y];
+      for (let v = 0; v < values.length; v++) {
+        if (numbOfPlacements === 3) sum += values[v];
+        else if (numbOfPlacements === 4 && v !== i) sum += values[v];
+        else if (numbOfPlacements === 5 && v !== i && v !== y) sum += values[v];
       }
       if (sum === 15) {
         return true;
-      }
-    }
-  }
-  if (numbOfPlacements === 5) {
-    for (let i = 0; i < values.length; i++) {
-      for (let y = 0; y < values.length; y++) {
-        sum = 0;
-        for (let x = 0; x < values.length; x++) {
-          if (x !== i && x !== y) sum += values[x];
-        }
-        if (sum === 15) {
-          return true;
-        }
       }
     }
   }
