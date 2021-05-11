@@ -1,6 +1,21 @@
 const board = document.getElementById("gameCanvas");
 const board_ctx = gameCanvas.getContext("2d");
 
+const cellSize = 150;
+
+const padding = 6;
+
+const boardSize = 3;
+
+let boardData = [];
+
+const boardValues = [4, 3, 8, 9, 5, 1, 2, 7, 6];
+
+let currentPlayer = "x";
+
+board.width = (cellSize + padding) * boardSize;
+board.height = (cellSize + padding) * boardSize;
+
 board.addEventListener("click", GetClickedCell);
 
 function GetClickedCell(event) {
@@ -14,22 +29,8 @@ function GetClickedCell(event) {
     boardData[CoordToIndex(cellX, cellY)] = currentPlayer;
     if (CheckWin(currentPlayer)) console.log("Yatzy! " + currentPlayer);
     currentPlayer = NextPlayer(currentPlayer);
-    // console.log(cellX + ", " + cellY);
   }
 }
-
-const cellSize = 150;
-
-const padding = 6;
-
-const boardSize = 3;
-
-let boardData = [];
-
-const boardValues = [4, 3, 8, 9, 5, 1, 2, 7, 6];
-
-let currentPlayer = "x";
-
 Main();
 
 function Main() {
@@ -94,9 +95,12 @@ function CheckWin(currentPlayer) {
     for (let y = 0; y < values.length; y++) {
       sum = 0;
       for (let v = 0; v < values.length; v++) {
-        if (numbOfPlacements === 3) sum += values[v];
-        else if (numbOfPlacements === 4 && v !== i) sum += values[v];
-        else if (numbOfPlacements === 5 && v !== i && v !== y) sum += values[v];
+        if (
+          numbOfPlacements === 3 ||
+          (numbOfPlacements === 4 && v !== i) ||
+          (numbOfPlacements === 5 && v !== i && v !== y)
+        )
+          sum += values[v];
       }
       if (sum === 15) {
         return true;
