@@ -5,6 +5,8 @@ const cellSize = 150;
 
 const padding = 6;
 
+const topOffset = 50;
+
 const boardSize = 3;
 
 let boardData = [];
@@ -14,20 +16,22 @@ const boardValues = [4, 3, 8, 9, 5, 1, 2, 7, 6];
 let currentPlayer = "x";
 
 board.width = (cellSize + padding) * boardSize;
-board.height = (cellSize + padding) * boardSize;
+board.height = (cellSize + padding) * boardSize + topOffset;
 
 board.addEventListener("click", GetClickedCell);
 
 function GetClickedCell(event) {
   let clickX = event.clientX - board.offsetLeft;
-  let clickY = event.clientY - board.offsetTop;
+  let clickY = event.clientY - board.offsetTop - topOffset;
 
   let cellX = Math.floor(clickX / cellSize);
   let cellY = Math.floor(clickY / cellSize);
 
   if (boardData[CoordToIndex(cellX, cellY)] == null) {
     boardData[CoordToIndex(cellX, cellY)] = currentPlayer;
-    if (CheckWin(currentPlayer)) console.log("Yatzy! " + currentPlayer);
+    if (CheckWin(currentPlayer)){
+      console.log("Yatzy! " + currentPlayer);
+    }
     currentPlayer = NextPlayer(currentPlayer);
   }
 }
@@ -45,7 +49,7 @@ function DrawBoard() {
       board_ctx.fillStyle = "black";
       board_ctx.rect(
         x * cellSize + padding,
-        y * cellSize + padding,
+        y * cellSize + padding + topOffset,
         cellSize - padding,
         cellSize - padding
       );
@@ -63,7 +67,7 @@ function DrawBoard() {
         board_ctx.fillText(
           boardData[CoordToIndex(x, y)],
           x * cellSize + cellSize / 2,
-          y * cellSize + cellSize / 2 + padding * 10
+          y * cellSize + cellSize / 2 + padding * 10 + topOffset
         );
       }
     }
