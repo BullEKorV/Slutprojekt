@@ -38,9 +38,9 @@ function GetClickedCell(event) {
       currentPlayer = NextPlayer(currentPlayer);
     }
   } else if (
-    clickX > board.width / 2 - cellSize &&
-    clickX < board.width / 2 + cellSize &&
-    clickY > board.height - topOffset * 2 &&
+    clickX > board.width / 2 - cellSize * 1.25 &&
+    clickX < board.width / 2 + cellSize * 1.25 &&
+    clickY > board.height - topOffset * 2.2 &&
     clickY < board.height
   ) {
     ResetGame();
@@ -59,22 +59,25 @@ function DrawBoard() {
 
   // Draw player won and button
   if (isNaN(playerWon)) {
-    board_ctx.font = "50px serif";
-    board_ctx.fillStyle = "black";
+    board_ctx.font = "60px serif";
+    board_ctx.fillStyle = "white";
     board_ctx.textAlign = "center";
-    board_ctx.fillText(
-      playerWon.toUpperCase() + " has won!",
-      board.width / 2,
-      topOffset
-    );
-    board_ctx.fillStyle = "blue";
+    if (playerWon === "none")
+      board_ctx.fillText("Both lost", board.width / 2, topOffset);
+    else
+      board_ctx.fillText(
+        playerWon.toUpperCase() + " won!",
+        board.width / 2,
+        topOffset
+      );
+    board_ctx.fillStyle = "rgb(9, 69, 214)";
     board_ctx.fillRect(
-      board.width / 2 - cellSize,
-      board.height - topOffset,
-      cellSize * 2,
-      cellSize * 1.5
+      board.width / 2 - cellSize * 1.25,
+      board.height - topOffset * 1.2,
+      cellSize * 2.5,
+      cellSize * 1.4
     );
-    board_ctx.fillStyle = "black";
+    board_ctx.fillStyle = "white";
     board_ctx.fillText(
       "Click to restart",
       board.width / 2,
@@ -85,7 +88,7 @@ function DrawBoard() {
   // Draw board
   for (let x = 0; x < boardSize; x++) {
     for (let y = 0; y < boardSize; y++) {
-      board_ctx.fillStyle = "black";
+      board_ctx.fillStyle = "lightgray";
       board_ctx.rect(
         x * cellSize + padding,
         y * cellSize + padding + topOffset,
@@ -100,7 +103,7 @@ function DrawBoard() {
     for (let y = 0; y < boardSize; y++) {
       if (boardData[CoordToIndex(x, y)] != null) {
         board_ctx.font = "250px serif";
-        board_ctx.fillStyle = "red";
+        board_ctx.fillStyle = "black";
         board_ctx.textAlign = "center";
 
         board_ctx.fillText(
@@ -150,7 +153,7 @@ function CheckWin(currentPlayer) {
       }
     }
   }
-  if (numbOfPlacements === 5) ResetGame();
+  if (numbOfPlacements === 5) playerWon = "none";
   return false;
   // https://stackoverflow.com/questions/2670217/detect-winning-game-in-nought-and-crosses FUCK YEAH SMART ALGORITHM
 }
